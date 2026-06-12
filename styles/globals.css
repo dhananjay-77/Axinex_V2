@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #f7f9fb;
+  color: #191c1e;
+  font-family: 'Inter', sans-serif;
+  min-width: 320px;
+  overflow-x: hidden;
+  text-wrap: pretty;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+@layer utilities {
+  .text-headline-xl {
+    font-size: clamp(2.5rem, 8vw, 3.75rem);
+  }
+
+  .text-headline-lg {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .text-headline-md {
+    font-size: clamp(1.5rem, 4.5vw, 2rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .py-section-gap {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .mb-section-gap {
+    margin-bottom: 4.5rem;
+  }
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-feature-settings: 'liga' 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.data-stream-bg {
+  background-image: radial-gradient(circle at 2px 2px, rgba(0, 75, 118, 0.05) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.motion-enhanced .motion-reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--motion-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.motion-enhanced .motion-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.motion-enhanced .motion-surface {
+  position: relative;
+  transform-style: preserve-3d;
+  transition:
+    box-shadow 320ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.motion-enhanced .motion-surface:hover {
+  box-shadow: 0 18px 42px rgba(11, 61, 91, 0.1);
+  transform: translate3d(var(--motion-x, 0), calc(var(--motion-y, 0) - 6px), 0) scale(1.01);
+}
+
+.hero-animation-node {
+  animation: pulse-node 4s infinite ease-in-out;
+}
+
+.robot-float {
+  animation: robot-float 4.8s ease-in-out infinite;
+}
+
+.robot-eye {
+  animation: robot-eye 2.8s ease-in-out infinite;
+}
+
+.robot-orbit {
+  animation: robot-orbit 14s linear infinite;
+}
+
+.robot-orbit-reverse {
+  animation: robot-orbit 18s linear infinite reverse;
+}
+
+.robot-pulse-ring {
+  animation: robot-pulse-ring 3.6s ease-in-out infinite;
+}
+
+.subsystem-flow-line {
+  background: linear-gradient(90deg, transparent, rgba(250, 75, 55, 0.75), transparent);
+  animation: subsystem-flow-line 3.8s ease-in-out infinite;
+}
+
+.subsystem-node {
+  animation: subsystem-node-rise 0.6s ease-out both;
+}
+
+.subsystem-signal {
+  animation: subsystem-signal 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-node {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+}
+
+@keyframes subsystem-flow-line {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translateY(-50%) scaleX(0.25);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes subsystem-node-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subsystem-signal {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes robot-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes robot-eye {
+  0%, 100% {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  45% {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  52% {
+    opacity: 0.55;
+    transform: scaleX(0.55);
+  }
+  60% {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes robot-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes robot-pulse-ring {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f9fb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c7d0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a7af;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .motion-enhanced .motion-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
