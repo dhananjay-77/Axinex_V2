@@ -1,17 +1,22 @@
 import connectDB from "@/config/db";
 import Employee from "@/models/Employee";
 
-export async function DELETE(req, context) {
+export async function PUT(req, { params }) {
   try {
     await connectDB();
 
-    const { id } = await context.params;
+    const body = await req.json();
 
-    await Employee.findByIdAndDelete(id);
+    const employee =
+      await Employee.findByIdAndUpdate(
+        params.id,
+        body,
+        { new: true }
+      );
 
     return Response.json({
       success: true,
-      message: "Employee Deleted",
+      employee,
     });
 
   } catch (error) {
@@ -27,46 +32,20 @@ export async function DELETE(req, context) {
     );
   }
 }
-export async function PUT(req, context) {
-  try {
 
+export async function DELETE(req, { params }) {
+  try {
     await connectDB();
 
-    const body =
-      await req.json();
-      const { id } = await context.params;
-
-    const employee =
-      await Employee.findByIdAndUpdate(
-        id,
-        body,
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
-
-    if (!employee) {
-      return Response.json(
-        {
-          success: false,
-          message:
-            "Employee not found",
-        },
-        {
-          status: 404,
-        }
-      );
-    }
+    await Employee.findByIdAndDelete(
+      params.id
+    );
 
     return Response.json({
       success: true,
-      employee,
     });
 
   } catch (error) {
-
-    console.log(error);
 
     return Response.json(
       {

@@ -14,23 +14,45 @@ export default function AdminDashboard() {
       try {
 
         const res = await fetch('/api/inquiry')
-        const dashboardRes = await fetch('/api/dashboard')
+const dashboardRes = await fetch('/api/dashboard')
+const employeeRes = await fetch('/api/employees')
         const dashboardData = await dashboardRes.json()
+const employeeData = await employeeRes.json()
 
-        const data = await res.json()
+const data = await res.json()
 
         if (data.success) {
-
+const responseRate =
+  data.inquiries.length > 0
+    ? Math.round(
+        (
+          (dashboardData.contactedCount +
+            dashboardData.resolvedCount) /
+          data.inquiries.length
+        ) * 100
+      )
+    : 0
           setRecentEnquiries(data.inquiries)
 
           setStats({
-            totalInquiries: dashboardData.totalInquiries,
-            monthlyTraffic: dashboardData.totalInquiries,
-            employees: 0,
-            newCount: dashboardData.newCount,
-            contactedCount: dashboardData.contactedCount,
-            resolvedCount: dashboardData.resolvedCount,
-          })
+  totalInquiries: dashboardData.totalInquiries,
+  monthlyTraffic: dashboardData.totalInquiries,
+
+  employees:
+    employeeData.employees.length,
+
+  responseRate:
+    responseRate,
+
+  newCount:
+    dashboardData.newCount,
+
+  contactedCount:
+    dashboardData.contactedCount,
+
+  resolvedCount:
+    dashboardData.resolvedCount,
+})
           updateTrafficData(
             'week',
             data.inquiries
@@ -54,30 +76,34 @@ export default function AdminDashboard() {
 
   }, [])
   const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState({
-    totalInquiries: 0,
-    monthlyTraffic: 0,
-    employees: 0,
-    newCount: 0,
-    contactedCount: 0,
-    resolvedCount: 0,
-  })
+ const [stats, setStats] = useState({
+  totalInquiries: 0,
+  monthlyTraffic: 0,
+  employees: 0,
+  responseRate: 0,
+  newCount: 0,
+  contactedCount: 0,
+  resolvedCount: 0,
+})
 
-  const [recentEnquiries, setRecentEnquiries] = useState([])
+const [recentEnquiries, setRecentEnquiries] = useState<any[]>([])
   const [trafficBars, setTrafficBars] = useState([
     20, 40, 60, 80, 50, 90, 70,
   ])
   const [activeFilter, setActiveFilter] = useState('week')
-  const [selectedEnquiry, setSelectedEnquiry] = useState(null)
+const [selectedEnquiry, setSelectedEnquiry] = useState<any>(null)
   const [emailSubject, setEmailSubject] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
-  const updateTrafficData = (type, inquiries = []) => {
+  const updateTrafficData = (
+  type: string,
+  inquiries: any[] = []
+) => {
 
     setActiveFilter(type)
 
     const bars = [0, 0, 0, 0, 0, 0, 0]
 
-    inquiries.forEach((item) => {
+    inquiries.forEach((item: any) => {
 
       const date = new Date(item.createdAt)
 
@@ -112,7 +138,7 @@ export default function AdminDashboard() {
     setTrafficBars(normalized)
   }
 
-  const openEmailModal = (enquiry: (typeof recentEnquiries)[number]) => {
+ const openEmailModal = (enquiry: any) => {
     setSelectedEnquiry(enquiry)
     setEmailSubject(`Re: Your enquiry (${enquiry.id})`)
     setEmailMessage(
@@ -125,47 +151,50 @@ export default function AdminDashboard() {
     setEmailSubject('')
     setEmailMessage('')
   }
-   const updateStatus = async (id, status) => {
+  const updateStatus = async (
+  id: string,
+  status: string
+) => {
 
-  console.log("ID =", id)
-  console.log("STATUS =", status)
-  try {
+    console.log("ID =", id)
+    console.log("STATUS =", status)
+    try {
 
-    const res = await fetch(
-      "/api/inquiry/status",
-      {
-        method: "PUT",
+      const res = await fetch(
+        "/api/inquiry/status",
+        {
+          method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        body: JSON.stringify({
-          id,
-          status,
-        }),
-      }
-    );
-
-    const data = await res.json();
-    console.log("API RESPONSE =", data)
-
-    if (data.success) {
-
-      setRecentEnquiries((prev) =>
-        prev.map((item) =>
-          item._id === id
-            ? { ...item, status }
-            : item
-        )
+          body: JSON.stringify({
+            id,
+            status,
+          }),
+        }
       );
 
-    }
+      const data = await res.json();
+      console.log("API RESPONSE =", data)
 
-  } catch (error) {
-    console.log(error);
-  }
-};
+      if (data.success) {
+
+        setRecentEnquiries((prev) =>
+          prev.map((item) =>
+            item._id === id
+              ? { ...item, status }
+              : item
+          )
+        );
+
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSendEmail = async () => {
 
@@ -303,7 +332,7 @@ export default function AdminDashboard() {
             </p>
 
             <h3 className="mt-1 font-headline-md text-headline-md text-primary">
-              85%
+             {stats.responseRate}%
             </h3>
           </div>
 
@@ -445,28 +474,28 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-3 py-4">
                       <div className="flex flex-col items-start gap-2">
-                       <select
-  value={enquiry.status || 'New'}
-  onChange={(e) =>
-    updateStatus(
-      enquiry._id,
-      e.target.value
-    )
-  }
-  className="rounded-md border px-2 py-1 text-sm"
->
-  <option value="New">
-    New
-  </option>
+                        <select
+                          value={enquiry.status || 'New'}
+                          onChange={(e) =>
+                            updateStatus(
+                              enquiry._id,
+                              e.target.value
+                            )
+                          }
+                          className="rounded-md border px-2 py-1 text-sm"
+                        >
+                          <option value="New">
+                            New
+                          </option>
 
-  <option value="Contacted">
-    Contacted
-  </option>
+                          <option value="Contacted">
+                            Contacted
+                          </option>
 
-  <option value="Resolved">
-    Resolved
-  </option>
-</select>
+                          <option value="Resolved">
+                            Resolved
+                          </option>
+                        </select>
                         <button
                           type="button"
                           onClick={() => openEmailModal(enquiry)}
