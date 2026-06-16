@@ -1,8 +1,8 @@
 'use client'
+
+import React, { useState } from 'react'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import { useState } from 'react'
-
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -12,14 +12,16 @@ export default function ContactPage() {
     message: '',
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+  e: React.FormEvent<HTMLFormElement>
+) => {
     e.preventDefault()
 
     const res = await fetch('/api/inquiry', {

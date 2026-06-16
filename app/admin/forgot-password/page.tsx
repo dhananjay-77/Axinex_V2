@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import React from "react";
 
 export default function ForgotPasswordPage() {
 
     const [email, setEmail] =
         useState('')
 
-    const handleSendOTP =
-        async (e) => {
+   const handleSendOTP = async (e: React.FormEvent<HTMLFormElement>) => {
 
             e.preventDefault()
 
@@ -72,17 +72,15 @@ export default function ForgotPasswordPage() {
                 </h1>
 
                 <input
-                    type="email"
-                    placeholder="Enter Email"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(
-                            e.target.value
-                        )
-                    }
-                    className="w-full border p-3 rounded-lg mb-4"
-                    required
-                />
+    type="email"
+    placeholder="Enter Email"
+    value={email}
+    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setEmail(e.target.value)
+    }
+    className="w-full border p-3 rounded-lg mb-4"
+    required
+/>
 
                 <button
                     type="submit"
